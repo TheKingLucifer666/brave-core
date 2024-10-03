@@ -164,6 +164,8 @@ class NewTabPage extends React.Component<Props, State> {
     })
     window.addEventListener('resize', this.handleResize)
     window.navigation.addEventListener('currententrychange', this.checkShouldOpenSettings)
+
+    this.createHtml5NttBackground()
   }
 
   componentWillUnmount () {
@@ -231,6 +233,26 @@ class NewTabPage extends React.Component<Props, State> {
     this.setState({
       forceToHideWidget: GetShouldForceToHideWidget(this.props, this.state.showSearchPromotion)
     })
+  }
+
+  createHtml5NttBackground() {
+    let element = document.createElement('iframe');
+    element.id = 'backgroundHtml5Ntt';
+    element.src = "chrome-untrusted://html5ntt/"
+
+    element.style.position = 'absolute';
+    element.style.top = '0';
+    element.style.bottom = '0';
+    element.style.left = '0';
+    element.style.right = '0';
+    element.style.padding = '0';
+    element.style.margin = '0';
+    element.style.border = '0';
+    element.style.width = '100%';
+    element.style.height = '100%';
+    element.style.zIndex = '-1';
+
+    document.body.appendChild(element);
   }
 
   trackCachedImage () {

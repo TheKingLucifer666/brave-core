@@ -95,6 +95,10 @@ inline constexpr char kRewriterUIHost[] = "rewriter";
 inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/Transaction-Simulation";
 
+inline constexpr char kBraveNewTabPageURL[] = "chrome://newtab/";
+inline constexpr char kUntrustedHTML5NTTHost[] = "html5ntt";
+inline constexpr char kUntrustedHTML5NTTURL[] = "chrome-untrusted://html5ntt/";
+
 // Hosts that are allowed to be installed as PWAs, which is usually
 // a blocked action for WebUIs. In Chromium, the "password-manager" host
 // is already allowed.
