@@ -72,6 +72,7 @@ include_rules += [
   "+brave/components/url_sanitizer/browser",
   "+brave/components/body_sniffer",
   "+brave/components/brave_federated",
+  "+brave/components/brave_new_tab",
   "+brave/components/brave_search/browser",
   "+brave/components/brave_search/common",
   "+brave/components/brave_webtorrent/browser",
