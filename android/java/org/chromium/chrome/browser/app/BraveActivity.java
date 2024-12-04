@@ -429,7 +429,7 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.set_default_browser) {
             BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
         } else if (id == R.id.brave_rewards_id) {
-            openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
+            showRewardsPage();
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet(false, false, false);
         } else if (id == R.id.brave_playlist_id) {
@@ -2090,6 +2090,14 @@ public abstract class BraveActivity extends ChromeActivity
     public void openBraveLeo() {
         BraveLeoUtils.verifySubscription(null);
         BraveLeoUtils.openLeoUrlForTab(getActivityTab().getWebContents());
+    }
+
+    public void showRewardsPage() {
+        if (BraveRewardsHelper.shouldShowNewRewardsUI()) {
+            BraveLeoActivity.showPage(this, BRAVE_REWARDS_SETTINGS_URL);
+        } else {
+            openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
+        }
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {
