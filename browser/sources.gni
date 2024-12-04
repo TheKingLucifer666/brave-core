@@ -615,3 +615,11 @@ if (is_android) {
     "//brave/browser/android/preferences",
   ]
 }
+
+# TODO(zenparsing): new_tab_page_ui.cc needs
+# //chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h which is
+# currently in the /chrome/browser target.
+if (!is_android) {
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/brave_new_tab" ]
+}
