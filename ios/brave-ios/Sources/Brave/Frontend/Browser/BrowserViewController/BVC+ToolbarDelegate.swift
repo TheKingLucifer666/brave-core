@@ -282,7 +282,10 @@ extension BrowserViewController: TopToolbarDelegate {
 
     if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
-      return handleChromiumWebUIURL(url)
+
+      finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+      return true
+      //      return handleChromiumWebUIURL(url)
     }
 
     guard let fixupURL = URIFixup.getURL(text) else {
@@ -682,7 +685,7 @@ extension BrowserViewController: TopToolbarDelegate {
       return
     }
     // System components sit on top so we want to dismiss it
-    selectedTab.webView?.findInteraction?.dismissFindNavigator()
+    selectedTab.webView?.findInPageController.stopFindInPage()
     presentWalletPanel(from: selectedTab.getOrigin(), with: selectedTab.tabDappStore)
   }
 
@@ -947,9 +950,6 @@ extension BrowserViewController: ToolbarDelegate {
       guard let url = tabManager.selectedTab?.url else { return nil }
 
       if let internalURL = InternalURL(url) {
-        if internalURL.isErrorPage {
-          return internalURL.originalURLFromErrorPage
-        }
         if internalURL.isReaderModePage {
           return internalURL.extractedUrlParam
         }
@@ -1041,8 +1041,7 @@ extension BrowserViewController: ToolbarDelegate {
   func topToolbarDidTapSecureContentState(_ urlBar: TopToolbarView) {
     guard let tab = tabManager.selectedTab, let url = tab.url
     else { return }
-    let hasCertificate =
-      (tab.webView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
+    let hasCertificate = tab.webView?.visibleSSLStatus?.certificate != nil
     let pageSecurityView = PageSecurityView(
       displayURL: urlBar.locationView.urlDisplayLabel.text ?? url.absoluteDisplayString,
       secureState: tab.lastKnownSecureContentState,
