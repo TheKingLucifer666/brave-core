@@ -69,9 +69,11 @@
         </if>
       </if>
 
-      <include name="IDR_HTML5_NTT_HTML" file="../html5_ntt/snow_ball/index.html" type="BINDATA" />
-      <include name="IDR_HTML5_NTT_CSS" file="../html5_ntt/snow_ball/style.css" type="BINDATA" />
-      <include name="IDR_HTML5_NTT_IMAGE1" file="../html5_ntt/snow_ball/image1.png" type="BINDATA" />
+      <include name="IDR_HTML5_NTT_HTML" file="../html5_ntt/index.html" type="BINDATA" />
+      <include name="IDR_HTML5_NTT_SCRIPT" file="../html5_ntt/script.js" type="BINDATA" />
+      <include name="IDR_HTML5_NTT_CSS" file="../html5_ntt/styles.css" type="BINDATA" />
+      <include name="IDR_HTML5_NTT_IMAGE1" file="../html5_ntt/background.jpg" type="BINDATA" />
+      <include name="IDR_HTML5_NTT_IMAGE2" file="../html5_ntt/logo.png" type="BINDATA" />
       <include name="IDR_HTML5_NTT_PARENT_FRAME_HTML" file="../html5_ntt/parent_frame.html" type="BINDATA" />
 
       <!-- Imagery links -->

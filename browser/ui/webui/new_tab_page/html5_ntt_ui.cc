@@ -7,42 +7,69 @@
 
 #include <string>
 
-#include "base/strings/strcat.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/html5_ntt/resources/grit/html5_ntt_generated_map.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
-#include "ui/resources/grit/webui_resources.h"
+
+namespace {
+
+void SetupContentSecurityPolicy(content::WebUIDataSource& untrusted_source) {
+  untrusted_source.AddFrameAncestor(GURL(kBraveNewTabPageURL));
+
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::Sandbox,
+      std::string("sandbox allow-scripts;"));
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::DefaultSrc,
+      std::string("default-src 'none';"));
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ScriptSrc,
+      std::string("script-src 'self';"));
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      std::string("style-src 'self';"));
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc, std::string("img-src 'self';"));
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::MediaSrc,
+      std::string("script-src 'self';"));
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::BaseURI,
+      std::string("base-uri 'none';"));
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FormAction,
+      std::string("form-action 'none';"));
+}
+
+void SetResources(content::WebUIDataSource& untrusted_source) {
+  untrusted_source.SetDefaultResource(IDR_HTML5_NTT_HTML);
+  untrusted_source.AddResourcePath("script.js", IDR_HTML5_NTT_SCRIPT);
+  untrusted_source.AddResourcePath("styles.css", IDR_HTML5_NTT_CSS);
+  untrusted_source.AddResourcePath("background.jpg", IDR_HTML5_NTT_IMAGE1);
+  untrusted_source.AddResourcePath("logo.png", IDR_HTML5_NTT_IMAGE2);
+  untrusted_source.AddResourcePaths(base::span(kHtml5NttGenerated));
+}
+
+void SetParameters(content::WebUIDataSource& untrusted_source) {
+  untrusted_source.AddString("braveHtml5NttUrl", kUntrustedHTML5NTTURL);
+}
+
+}  // namespace
 
 UntrustedHTML5NTTUI::UntrustedHTML5NTTUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
   auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kUntrustedHTML5NTTURL);
-  untrusted_source->AddFrameAncestor(GURL(kBraveNewTabPageURL));
+  CHECK(untrusted_source);
 
-  untrusted_source->SetDefaultResource(IDR_HTML5_NTT_HTML);
-  untrusted_source->AddResourcePath("style.css", IDR_HTML5_NTT_CSS);
-  untrusted_source->AddResourcePath("image1.png", IDR_HTML5_NTT_IMAGE1);
-  untrusted_source->AddResourcePaths(base::span(kHtml5NttGenerated));
+  SetupContentSecurityPolicy(*untrusted_source);
 
-  untrusted_source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::StyleSrc,
-      std::string("style-src 'self';"));
-  untrusted_source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ImgSrc,
-      std::string("img-src 'self';"));
+  SetResources(*untrusted_source);
 
-  untrusted_source->UseStringsJs();
-  untrusted_source->AddString("braveHtml5NttUrl", kUntrustedHTML5NTTURL);
-
-  // In case if we need to embed a frame.
-  // untrusted_source->AddResourcePath("parent_frame.html", IDR_HTML5_NTT_PARENT_FRAME_HTML);
-  // untrusted_source->AddFrameAncestor(GURL(kUntrustedHTML5NTTURL));
-  // untrusted_source->OverrideContentSecurityPolicy(
-  //     network::mojom::CSPDirectiveName::FrameSrc,
-  //     base::StrCat({"frame-src ", kUntrustedHTML5NTTURL, ";"}));
+  SetParameters(*untrusted_source);
 }
 
 UntrustedHTML5NTTUI::~UntrustedHTML5NTTUI() = default;
