@@ -55,8 +55,19 @@ struct Logo {
   ~Logo();
 };
 
+struct HtmlBackground {
+  base::FilePath html_file;
+  std::vector<base::FilePath> assets;
+
+  HtmlBackground();
+  HtmlBackground(const HtmlBackground& background);
+  HtmlBackground& operator=(const HtmlBackground& background);
+  ~HtmlBackground();
+};
+
 struct SponsoredBackground {
   base::FilePath image_file;
+  HtmlBackground html;
   gfx::Point focal_point;
   brave_ads::ConditionMatcherMap condition_matchers;
   std::string background_color;

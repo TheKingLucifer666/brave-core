@@ -113,6 +113,12 @@ Logo::Logo() = default;
 Logo::Logo(const Logo&) = default;
 Logo::~Logo() = default;
 
+HtmlBackground::HtmlBackground() = default;
+HtmlBackground::HtmlBackground(const HtmlBackground& background) = default;
+HtmlBackground& HtmlBackground::operator=(const HtmlBackground& background) =
+    default;
+HtmlBackground::~HtmlBackground() = default;
+
 SponsoredBackground::SponsoredBackground() = default;
 SponsoredBackground::SponsoredBackground(
     const base::FilePath& image_file_path,
@@ -228,13 +234,41 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
   if (auto* wallpapers = value.FindList(kWallpapersKey)) {
     for (const auto& entry : *wallpapers) {
       const auto& wallpaper = entry.GetDict();
-      const std::string* image_url = wallpaper.FindString(kImageURLKey);
-      if (!image_url) {
-        continue;
-      }
 
       SponsoredBackground background;
-      background.image_file = installed_dir.AppendASCII(*image_url);
+      if (const std::string* image_url = wallpaper.FindString(kImageURLKey)) {
+        background.image_file = installed_dir.AppendASCII(*image_url);
+      } else if (const std::string* html_url =
+                     wallpaper.FindString(kHtmlURLKey)) {
+        background.html.html_file = installed_dir.AppendASCII(*html_url);
+        const auto* assets = wallpaper.FindList(kAssetsKey);
+        if (!assets) {
+          VLOG(6) << "No assets found for HTML5NTT background";
+          continue;
+        }
+        for (const auto& asset_value : *assets) {
+          const std::string* asset = asset_value.GetIfString();
+          if (!asset) {
+            VLOG(6) << "Invalid asset found for HTML5NTT background";
+            continue;
+          }
+
+          background.html.assets.push_back(installed_dir.AppendASCII(*asset));
+        }
+
+        if (base::ranges::find(background.html.assets,
+                               background.html.html_file) ==
+            background.html.assets.end()) {
+          VLOG(6) << "HTML5NTT background file is also listed as an asset";
+          continue;
+        }
+
+        VLOG(6) << "Parsed HTML5NTT background: "
+                << background.html.html_file.AsUTF8Unsafe();
+        for (const auto& asset : background.html.assets) {
+          VLOG(6) << "HTML5NTT background asset: " << asset.AsUTF8Unsafe();
+        }
+      }
 
       if (auto* focal_point = wallpaper.FindDict(kWallpaperFocalPointKey)) {
         background.focal_point = {focal_point->FindInt(kXKey).value_or(0),

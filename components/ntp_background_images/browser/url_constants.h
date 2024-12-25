@@ -45,6 +45,8 @@ inline constexpr char kTopSiteNameKey[] = "name";
 inline constexpr char kTopSiteIconURLKey[] = "iconUrl";
 
 inline constexpr char kImageURLKey[] = "imageUrl";
+inline constexpr char kHtmlURLKey[] = "htmlUrl";
+inline constexpr char kAssetsKey[] = "assets";
 inline constexpr char kDestinationURLKey[] = "destinationUrl";
 inline constexpr char kBackgroundColorKey[] = "backgroundColor";
 inline constexpr char kCompanyNameKey[] = "companyName";

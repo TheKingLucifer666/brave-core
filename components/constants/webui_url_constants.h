@@ -98,6 +98,8 @@ inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
 inline constexpr char kBraveNewTabPageURL[] = "chrome://newtab/";
 inline constexpr char kUntrustedHTML5NTTHost[] = "html5ntt";
 inline constexpr char kUntrustedHTML5NTTURL[] = "chrome-untrusted://html5ntt/";
+inline constexpr char kUntrustedHTML5NTTDataURL[] =
+    "chrome-untrusted://html5ntt-data/";
 
 // Hosts that are allowed to be installed as PWAs, which is usually
 // a blocked action for WebUIs. In Chromium, the "password-manager" host

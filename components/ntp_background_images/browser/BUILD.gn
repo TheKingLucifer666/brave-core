@@ -30,6 +30,8 @@ static_library("browser") {
 
   if (!is_ios) {
     sources += [
+      "html5_ntt_source.cc",
+      "html5_ntt_source.h",
       "ntp_background_images_source.cc",
       "ntp_background_images_source.h",
       "ntp_sponsored_images_source.cc",

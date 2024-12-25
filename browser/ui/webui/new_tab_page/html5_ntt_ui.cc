@@ -26,22 +26,24 @@ void SetupContentSecurityPolicy(content::WebUIDataSource& untrusted_source) {
       network::mojom::CSPDirectiveName::DefaultSrc,
       std::string("default-src 'none';"));
   untrusted_source.OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ScriptSrc,
-      std::string("script-src 'self';"));
-  untrusted_source.OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::StyleSrc,
-      std::string("style-src 'self';"));
-  untrusted_source.OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ImgSrc, std::string("img-src 'self';"));
-  untrusted_source.OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::MediaSrc,
-      std::string("script-src 'self';"));
-  untrusted_source.OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::BaseURI,
       std::string("base-uri 'none';"));
   untrusted_source.OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FormAction,
       std::string("form-action 'none';"));
+
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ScriptSrc,
+      std::string("script-src 'self' ") + kUntrustedHTML5NTTDataURL + ";");
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      std::string("style-src 'self' ") + kUntrustedHTML5NTTDataURL + ";");
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      std::string("img-src 'self' ") + kUntrustedHTML5NTTDataURL + ";");
+  untrusted_source.OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::MediaSrc,
+      std::string("media-src 'self' ") + kUntrustedHTML5NTTDataURL + ";");
 }
 
 void SetResources(content::WebUIDataSource& untrusted_source) {
