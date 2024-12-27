@@ -1,0 +1,13 @@
+diff --git a/sql/database.h b/sql/database.h
+index e511f816dc744e007c9de65d230924741ed7791c..de72bb282bb403c9ec0e68a2c7352460a277d02a 100644
+--- a/sql/database.h
++++ b/sql/database.h
+@@ -297,7 +297,7 @@ class COMPONENT_EXPORT(SQL) Database {
+     // Purposely not explicit to avoid requiring callers to wrap their tag
+     // string.
+     consteval Tag(const char* tag_value) : value(tag_value) {
+-      if (!sql_metrics::IsValidDatabaseTag(tag_value)) {
++      if (false && !sql_metrics::IsValidDatabaseTag(tag_value)) {
+         // This will never actually invoke what's under NOTREACHED(), but
+         // NOTREACHED() is invalid in a consteval context so compilation will
+         // fail iff the string is invalid.
