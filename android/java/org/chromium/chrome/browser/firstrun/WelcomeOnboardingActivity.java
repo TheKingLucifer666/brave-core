@@ -279,7 +279,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     .writeBoolean(ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
             FirstRunUtils.setEulaAccepted();
             finish();
-            sendFirstRunCompletePendingIntent();
+            sendFirstRunCompleteIntent();
         }
     }
 
