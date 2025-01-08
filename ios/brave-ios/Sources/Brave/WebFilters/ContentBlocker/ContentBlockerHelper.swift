@@ -82,6 +82,8 @@ class ContentBlockerHelper: ObservableObject {
 
   var statsDidChange: ((TPPageStats) -> Void)?
   @Published var blockedRequests: OrderedSet<BlockedRequestInfo> = []
+  @Published var hiddenStandardSelectors: Set<String> = []
+  @Published var hiddenAggressiveSelectors: Set<String> = []
 
   init(tab: Tab) {
     self.tab = tab
@@ -113,5 +115,10 @@ class ContentBlockerHelper: ObservableObject {
     ]
 
     ContentBlockerManager.log.debug("Set rule lists:\n\(parts.joined(separator: "\n"))")
+  }
+
+  func resetSelectorsCache() {
+    hiddenStandardSelectors.removeAll()
+    hiddenAggressiveSelectors.removeAll()
   }
 }
