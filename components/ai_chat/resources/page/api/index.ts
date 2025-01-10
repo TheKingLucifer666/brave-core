@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import { loadTimeData } from '$web-common/loadTimeData'
- import API from '../../common/api'
- import * as Mojom from '../../common/mojom'
+import { loadTimeData } from '$web-common/loadTimeData'
+import API from '../../common/api'
+import * as Mojom from '../../common/mojom'
 
 // State that is owned by this class because it is global to the UI
 // (loadTimeData / Service / UIHandler).
@@ -19,6 +19,7 @@ export type State = Mojom.ServiceState & {
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
   allActions: Mojom.ActionGroup[]
+  windows: Mojom.Window[]
 }
 
 export const defaultUIState: State = {
@@ -34,10 +35,11 @@ export const defaultUIState: State = {
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
   allActions: [],
+  windows: []
 }
 
 // Owns connections to the browser via mojom as well as global state
-class PageAPI extends API<State> {
+class PageAPI extends API<State> implements Mojom.TabListenerInterface {
   public service: Mojom.ServiceRemote
     = Mojom.Service.getRemote()
 
@@ -52,6 +54,11 @@ class PageAPI extends API<State> {
 
   public conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter
     = new Mojom.ParentUIFrameCallbackRouter()
+
+  public tabInformer: Mojom.TabInformerRemote
+    = Mojom.TabInformer.getRemote()
+
+  private tabListenerReceiver = new Mojom.TabListenerReceiver(this)
 
   constructor() {
     super(defaultUIState)
@@ -86,6 +93,11 @@ class PageAPI extends API<State> {
       allActions
     })
 
+    // If we're in standalone mode, listen for tab changes so we can show a picker.
+    if (isStandalone) {
+      this.tabInformer.addListener(this.tabListenerReceiver.$.bindNewPipeAndPassRemote())
+    }
+
     this.observer.onStateChanged.addListener((state: Mojom.ServiceState) => {
       this.setPartialState(state)
     })
@@ -113,6 +125,12 @@ class PageAPI extends API<State> {
       if (document.visibilityState === 'visible') {
         this.updateCurrentPremiumStatus()
       }
+    })
+  }
+
+  tabsChanged(windows: Mojom.Window[]) {
+    this.setPartialState({
+      windows
     })
   }
 

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 
+#include <memory>
 #include <utility>
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -14,6 +15,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -160,6 +162,14 @@ void AIChatUI::BindInterface(
   CHECK(page_handler_);
   page_handler_->BindParentUIFrameFromChildFrame(
       std::move(parent_ui_frame_receiver));
+}
+
+void AIChatUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::TabInformer> tab_informer_receiver) {
+#if !BUILDFLAG(IS_ANDROID)
+  tab_informer_ = std::make_unique<ai_chat::TabInformer>(
+      std::move(tab_informer_receiver), web_ui()->GetWebContents());
+#endif
 }
 
 bool AIChatUIConfig::IsWebUIEnabled(content::BrowserContext* browser_context) {

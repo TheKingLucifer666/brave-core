@@ -534,6 +534,7 @@ function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs:
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
     isStandalone: options.args.isStandalone,
     allActions: ACTIONS_LIST,
+    windows: [],
     goPremium: () => {},
     managePremium: () => {},
     handleAgreeClick: () => {},

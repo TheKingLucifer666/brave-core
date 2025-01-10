@@ -10,8 +10,11 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
+#include "brave/browser/ui/ai_chat/tab_informer.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -25,6 +28,7 @@
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -51,6 +55,46 @@ constexpr char kURLManagePremium[] = "https://account.brave.com/";
 }  // namespace
 
 namespace ai_chat {
+
+namespace {
+
+class WaitForCommit : public content::WebContentsObserver {
+ public:
+  WaitForCommit(
+      content::WebContents* contents,
+      base::OnceCallback<void(content::WebContents* contents)> on_loaded)
+      : WebContentsObserver(contents), on_loaded_(std::move(on_loaded)) {}
+  ~WaitForCommit() override = default;
+
+  void DidFinishNavigation(content::NavigationHandle* handle) override {
+    if (handle->IsInMainFrame() && handle->HasCommitted()) {
+      std::move(on_loaded_).Run(web_contents());
+      delete this;
+    }
+  }
+
+  void WebContentsDestroyed() override { delete this; }
+
+ private:
+  base::OnceCallback<void(content::WebContents* contents)> on_loaded_;
+};
+
+// Note: After session restore we need to ensure the WebContents is loaded
+// before associating content with a conversation.
+void EnsureWebContentsLoaded(
+    content::WebContents* contents,
+    base::OnceCallback<void(content::WebContents* contents)> on_loaded) {
+  if (!contents->GetController().NeedsReload()) {
+    std::move(on_loaded).Run(contents);
+    return;
+  }
+
+  // Deletes when the load completes or the WebContents is destroyed
+  new WaitForCommit(contents, std::move(on_loaded));
+  contents->GetController().LoadIfNecessary();
+}
+
+}  // namespace
 
 using mojom::CharacterType;
 using mojom::ConversationTurn;
@@ -232,6 +276,30 @@ void AIChatUIPageHandler::BindRelatedConversation(
               active_chat_tab_helper_->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+}
+
+void AIChatUIPageHandler::AssociateTab(mojom::TabPtr tab,
+                                       const std::string& conversation_uuid) {
+  auto* contents = ai_chat::TabInformer::GetFromTab(tab);
+  if (!contents) {
+    return;
+  }
+
+  EnsureWebContentsLoaded(
+      contents, base::BindOnce(
+                    [](const std::string& conversation_uuid,
+                       content::WebContents* contents) {
+                      auto* tab_helper =
+                          ai_chat::AIChatTabHelper::FromWebContents(contents);
+                      if (!tab_helper) {
+                        return;
+                      }
+
+                      AIChatServiceFactory::GetForBrowserContext(
+                          contents->GetBrowserContext())
+                          ->AssociateContent(tab_helper, conversation_uuid);
+                    },
+                    conversation_uuid));
 }
 
 void AIChatUIPageHandler::NewConversation(
