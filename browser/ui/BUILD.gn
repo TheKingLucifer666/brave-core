@@ -106,6 +106,8 @@ source_set("ui") {
   # It doesn't make sense to view the webcompat webui on iOS & Android.
   if (!is_android && !is_ios) {
     sources += [
+      "ai_chat/tab_informer.cc",
+      "ai_chat/tab_informer.h",
       "webui/webcompat_reporter/webcompat_reporter_ui.cc",
       "webui/webcompat_reporter/webcompat_reporter_ui.h",
     ]
