@@ -15,7 +15,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     return $.postNativeMessage(messageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
-        sourceURL: window.location.href,
+        windowOrigin: $.windowOrigin,
         ids: ids,
         classes: classes
       }
@@ -32,7 +32,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     return $.postNativeMessage(partinessMessageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
-        sourceURL: window.location.href,
+        windowOrigin: $.windowOrigin,
         urls: urls,
       }
     })
@@ -201,8 +201,11 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
    * @returns True or false indicating if anything was extracted
    */
   const extractIDSelectorIfNeeded = (element) => {
-    const id = element.id
+    const id = element.getAttribute('id')
     if (!id) { return false }
+    if (typeof id !== 'string' && !(id instanceof String)) {
+      return false
+    }
     const selector = `#${id}`
     if (!CC.allSelectors.has(selector)) {
       CC.allSelectors.add(selector)
