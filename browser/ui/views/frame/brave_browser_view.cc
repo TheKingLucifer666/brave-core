@@ -587,13 +587,10 @@ void BraveBrowserView::UpdateSecondaryDevtoolsLayoutAndVisibility(
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
-  if (auto* tab_search_container =
-          tab_strip_region_view()->GetTabSearchContainer()) {
-    if (auto* button = tab_search_container->tab_search_button()) {
-      auto is_tab_search_visible =
-          GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
-      button->SetVisible(is_tab_search_visible);
-    }
+  if (auto* tab_search_button = tab_strip_region_view_->GetTabSearchButton()) {
+    auto is_tab_search_visible =
+        GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
+    tab_search_button->SetVisible(is_tab_search_visible);
   }
 }
 
