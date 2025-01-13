@@ -36,7 +36,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
-      assertionFailure("Invalid security token. Fix the `RequestBlocking.js` script")
+      assertionFailure("Invalid security token. Fix the `content_cosmetic_ios.js` script")
       replyHandler(nil, nil)
       return
     }
@@ -96,7 +96,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         )
       }
     } catch {
-      assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")
+      assertionFailure("Invalid type of message. Fix the `content_cosmetic_ios.js` script")
       replyHandler(nil, nil)
     }
   }
