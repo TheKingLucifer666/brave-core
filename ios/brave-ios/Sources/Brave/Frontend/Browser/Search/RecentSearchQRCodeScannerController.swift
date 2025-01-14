@@ -80,14 +80,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
         }),
         for: .touchUpInside
       )
-
-      //      didProcessScanReusltsTask = Task.delayed(bySeconds: 3.seconds) { @MainActor [weak self] in
-      //        try Task.checkCancellation()
-      //        guard let self = self else { return }
-      //
-      //        self.scannerView.scannedDisplayButton.isHidden = true
-      //        self.onDidScan(string)
-      //      }
     }
   }
 
@@ -195,7 +187,7 @@ extension RecentSearchQRCodeScannerController {
       $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
       $0.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
       $0.titleLabel?.lineBreakMode = .byTruncatingTail
-      $0.setTitleColor(UIColor.white, for: .normal)
+      $0.setTitleColor(.white, for: .normal)
       $0.backgroundColor = UIColor(braveSystemName: .primitivePurple60)
       $0.layer.cornerRadius = 10
       $0.layer.cornerCurve = .continuous
