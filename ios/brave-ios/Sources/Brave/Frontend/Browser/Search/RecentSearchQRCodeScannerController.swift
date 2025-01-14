@@ -16,8 +16,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
   private var didScan = false
   private var onDidScan: (_ string: String) -> Void
 
-  private var didProcessScanReusltsTask: Task<Void, Error>?
-
   public static var hasCameraSupport: Bool {
     if ProcessInfo.processInfo.isiOSAppOnVisionOS {
       // Apps on VisionOS can't access the main camera
@@ -73,7 +71,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
         UIAction(handler: { [weak self] _ in
           guard let self = self else { return }
 
-          self.didProcessScanReusltsTask?.cancel()
           self.scannerView.scannedDisplayButton.isHidden = true
           self.onDidScan(string)
           self.dismiss(animated: true, completion: nil)
@@ -86,7 +83,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
-    didProcessScanReusltsTask?.cancel()
     scannerView.cameraView.stopRunning()
   }
 
