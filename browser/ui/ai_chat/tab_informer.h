@@ -50,6 +50,8 @@ class TabInformer : public mojom::TabInformer,
   bool ShouldTrackBrowser(Browser* browser) override;
 
  private:
+  friend class TabInformerBrowserTest;
+
   State GetState();
   void NotifyListeners();
   void NotifyListener(mojom::TabListener* listener, State state);

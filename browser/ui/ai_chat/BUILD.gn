@@ -35,3 +35,26 @@ source_set("unit_tests") {
     "//testing/gtest:gtest",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = []
+
+  if (!is_android) {
+    sources += [ "tab_informer_browsertest.cc" ]
+  }
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+}
