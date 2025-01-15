@@ -1,8 +1,16 @@
 diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
-index e029700325e792e7a840ed94f25e7a49b86d0046..26397f7f74202c5a41508fea1e94d2582cc586fd 100644
+index e029700325e792e7a840ed94f25e7a49b86d0046..f9d878877802a00171552a7a5b5e159df3198f67 100644
 --- a/base/threading/thread_restrictions.h
 +++ b/base/threading/thread_restrictions.h
-@@ -733,6 +733,7 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
+@@ -565,6 +565,7 @@ class BASE_EXPORT ScopedAllowBlocking {
+   ScopedAllowBlocking(const ScopedAllowBlocking&) = delete;
+   ScopedAllowBlocking& operator=(const ScopedAllowBlocking&) = delete;
+ 
++  BRAVE_SCOPED_ALLOW_BLOCKING_H
+  private:
+   FRIEND_TEST_ALL_PREFIXES(ThreadRestrictionsTest,
+                            NestedAllowRestoresPreviousStack);
+@@ -733,6 +734,7 @@ class BASE_EXPORT ScopedAllowBaseSyncPrimitives {
    ScopedAllowBaseSyncPrimitives& operator=(
        const ScopedAllowBaseSyncPrimitives&) = delete;
  
