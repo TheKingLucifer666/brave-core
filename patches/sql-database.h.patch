@@ -1,5 +1,5 @@
 diff --git a/sql/database.h b/sql/database.h
-index e511f816dc744e007c9de65d230924741ed7791c..de72bb282bb403c9ec0e68a2c7352460a277d02a 100644
+index 494c52135bf2d09de2447c4a379c69a78442b085..86bfff44fac5a0ea7e0f94c9dae71845114459f2 100644
 --- a/sql/database.h
 +++ b/sql/database.h
 @@ -297,7 +297,7 @@ class COMPONENT_EXPORT(SQL) Database {
