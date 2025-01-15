@@ -30,6 +30,7 @@ source_set("brave_new_tab") {
     "//brave/components/brave_new_tab",
     "//brave/components/brave_new_tab:mojom",
     "//brave/components/brave_new_tab/resources:generated_resources",
+    "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_search_conversion",
     "//brave/components/l10n/common",
