@@ -39,7 +39,7 @@ export const defaultUIState: State = {
 }
 
 // Owns connections to the browser via mojom as well as global state
-class PageAPI extends API<State> implements Mojom.TabListenerInterface {
+class PageAPI extends API<State> {
   public service: Mojom.ServiceRemote
     = Mojom.Service.getRemote()
 
@@ -55,10 +55,8 @@ class PageAPI extends API<State> implements Mojom.TabListenerInterface {
   public conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter
     = new Mojom.ParentUIFrameCallbackRouter()
 
-  public tabInformer: Mojom.TabInformerRemote
-    = Mojom.TabInformer.getRemote()
-
-  private tabListenerReceiver = new Mojom.TabListenerReceiver(this)
+  public tabObserver: Mojom.TabListenerCallbackRouter
+    = new Mojom.TabListenerCallbackRouter()
 
   constructor() {
     super(defaultUIState)
@@ -95,7 +93,12 @@ class PageAPI extends API<State> implements Mojom.TabListenerInterface {
 
     // If we're in standalone mode, listen for tab changes so we can show a picker.
     if (isStandalone) {
-      this.tabInformer.addListener(this.tabListenerReceiver.$.bindNewPipeAndPassRemote())
+      Mojom.TabInformer.getRemote().addListener(this.tabObserver.$.bindNewPipeAndPassRemote())
+      this.tabObserver.tabsChanged.addListener((windows: Mojom.Window[]) => {
+        this.setPartialState({
+          windows
+        })
+      })
     }
 
     this.observer.onStateChanged.addListener((state: Mojom.ServiceState) => {
@@ -125,12 +128,6 @@ class PageAPI extends API<State> implements Mojom.TabListenerInterface {
       if (document.visibilityState === 'visible') {
         this.updateCurrentPremiumStatus()
       }
-    })
-  }
-
-  tabsChanged(windows: Mojom.Window[]) {
-    this.setPartialState({
-      windows
     })
   }
 

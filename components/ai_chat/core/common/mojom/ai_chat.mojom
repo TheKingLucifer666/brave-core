@@ -88,7 +88,11 @@ struct SiteInfo {
   // Web page specific fields, if available and allowed
   string? title;
   string? hostname;
-  int32? content_id;
+
+  // Note: iOS doesn't support optional int32s un mojom, so we use -1 to
+  // indicate that the content id is not set.
+  int32 content_id;
+
   url.mojom.Url? url;
 
   // Percentage of the content that has been utilized by remote LLM (0-100)

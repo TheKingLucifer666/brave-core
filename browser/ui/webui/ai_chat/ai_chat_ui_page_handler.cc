@@ -58,6 +58,12 @@ namespace ai_chat {
 
 namespace {
 
+// Invokes a callback when the WebContents has finished loading. Note: If the
+// WebContents is destroyed before loading is completed, the callback will not
+// be invoked.
+// The lifetime of this class is tied to the WebContents it is observing - it
+// will be destroyed when |WebContentsDestroyed| is called, or when the
+// Navigation finishes, whichever happens first.
 class WaitForCommit : public content::WebContentsObserver {
  public:
   WaitForCommit(

@@ -1639,7 +1639,7 @@ void ConversationHandler::BuildAssociatedContentInfo() {
     metadata_->associated_content->title = std::nullopt;
     metadata_->associated_content->hostname = std::nullopt;
     metadata_->associated_content->url = std::nullopt;
-    metadata_->associated_content->content_id = std::nullopt;
+    metadata_->associated_content->content_id = -1;
     metadata_->associated_content->is_content_association_possible = false;
   }
 }

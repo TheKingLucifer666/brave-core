@@ -159,7 +159,7 @@ ConversationHandler* AIChatService::CreateConversation() {
         conversation_uuid, "", base::Time::Now(), false, std::nullopt,
         mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
                              mojom::ContentType::PageContent, std::nullopt,
-                             std::nullopt, std::nullopt, std::nullopt, 0, false,
+                             std::nullopt, -1, std::nullopt, 0, false,
                              false));
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
@@ -953,6 +953,10 @@ void AIChatService::AssociateContent(
     const std::string& conversation_uuid) {
   CHECK(content);
 
+  // Note: As we're using the non-async version of GetConversation, this will
+  // only work when the conversation is already loaded.
+  // If we ever need to associate content with a conversation that is not
+  // loaded, we'll need to use the async version of GetConversation.
   auto* conversation = GetConversation(conversation_uuid);
   if (!conversation) {
     return;

@@ -132,7 +132,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
                   page_url.host(), 1, page_url, 62, true, true)
             : mojom::SiteInfo::New(
                   std::nullopt, mojom::ContentType::PageContent, std::nullopt,
-                  std::nullopt, std::nullopt, std::nullopt, 0, false, false);
+                  std::nullopt, -1, std::nullopt, 0, false, false);
     const mojom::ConversationPtr metadata =
         mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
                                  std::nullopt, std::move(associated_content));
@@ -266,8 +266,8 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
     mojom::ConversationPtr metadata = mojom::Conversation::New(
         uuid, initial_title, base::Time::Now(), true, std::nullopt,
         mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
-                             std::nullopt, std::nullopt, std::nullopt,
-                             std::nullopt, 0, false, false));
+                             std::nullopt, std::nullopt, -1, std::nullopt, 0,
+                             false, false));
 
     // Persist the first entry (and get the response ready)
     const auto history = CreateSampleChatHistory(1u);
@@ -341,8 +341,8 @@ TEST_P(AIChatDatabaseTest, DeleteAllData) {
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
-                           std::nullopt, std::nullopt, std::nullopt,
-                           std::nullopt, 0, false, false));
+                           std::nullopt, std::nullopt, -1, std::nullopt, 0,
+                           false, false));
 
   auto history = CreateSampleChatHistory(1u);
 
