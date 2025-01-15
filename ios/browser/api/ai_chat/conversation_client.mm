@@ -71,7 +71,7 @@ void ConversationClient::OnSuggestedQuestionsChanged(
 void ConversationClient::OnAssociatedContentInfoChanged(
     const mojom::AssociatedContentPtr site_info,
     bool should_send_content) {
-  [bridge_ onPageHasContent:[[AiChatSiteInfo alloc]
+  [bridge_ onPageHasContent:[[AiChatAssociatedContent alloc]
                                 initWithSiteInfoPtr:site_info->Clone()]
           shouldSendContent:should_send_content];
 }
