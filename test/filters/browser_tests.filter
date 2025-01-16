@@ -705,7 +705,7 @@
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldNotBindEncryptionKeysApiInPrerendering
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_LongNameExtension
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_NormalExtension
--WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate/0
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate/*
 
 # These tests fail because they expect being signed into the primary account on
 # the web.
