@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/BUILD.gn b/components/search_engines/BUILD.gn
-index ba0a834c692b21a76419a1af73cf8b52d2735584..245f3b9d669cbbaf29e86b9bf153a6a20b7c373b 100644
+index 2a1e30ed22bc0ee219bf3cac6a24cacac2a313d0..1897df76534f7d2fbc5cce7cbc2dc77738b3c820 100644
 --- a/components/search_engines/BUILD.gn
 +++ b/components/search_engines/BUILD.gn
-@@ -273,6 +273,7 @@ json_to_struct("prepopulated_engines") {
+@@ -274,6 +274,7 @@ json_to_struct("prepopulated_engines") {
      ":search_engine_type",
      "//base",
    ]

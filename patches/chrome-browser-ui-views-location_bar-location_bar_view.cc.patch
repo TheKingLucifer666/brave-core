@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 532591939f849e75668a1357803d26acc3e621d7..c2b12754c3e00f4c069019f1b52739e49d9ef60f 100644
+index ebf977fbf2744ad1209c6e77bc09e154828bc626..d90361f38776fa19aa360e360c727ccdae96315d 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -758,6 +758,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -762,6 +762,7 @@ void LocationBarView::Layout(PassKey) {
    // Indentation add padding when the permission chip is visible and replacing
    // the LHS icon.
    int text_overriding_permission_chip_indent = 0;
@@ -10,7 +10,7 @@ index 532591939f849e75668a1357803d26acc3e621d7..c2b12754c3e00f4c069019f1b52739e4
    if (should_indent) {
      icon_left += icon_indent;
      text_left += text_indent;
-@@ -822,6 +823,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -826,6 +827,7 @@ void LocationBarView::Layout(PassKey) {
        }
        selected_keyword_view_->SetCustomImage(image);
      }
@@ -18,7 +18,7 @@ index 532591939f849e75668a1357803d26acc3e621d7..c2b12754c3e00f4c069019f1b52739e4
    } else if (location_icon_view_->GetShowText() &&
               !ShouldChipOverrideLocationIcon()) {
      location_icon_view_->SetVisible(true);
-@@ -869,6 +871,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -873,6 +875,7 @@ void LocationBarView::Layout(PassKey) {
      }
    };
  
@@ -26,7 +26,7 @@ index 532591939f849e75668a1357803d26acc3e621d7..c2b12754c3e00f4c069019f1b52739e4
    add_trailing_decoration(page_action_icon_container_,
                            /*intra_item_padding=*/0);
    add_trailing_decoration(page_action_container_,
-@@ -884,6 +887,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -888,6 +891,7 @@ void LocationBarView::Layout(PassKey) {
    }
  
    add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0);

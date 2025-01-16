@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 5d14b91245e6fc418de910dcaf2ed5b208925e4a..762738da937c5b654a1f07330a566f8e47275fdc 100644
+index ba6521134443667cb75f32e2e6f11202d82e57de..27c03abe5a3084e51519176c01f219d8598d064b 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4337,6 +4337,7 @@ const FeatureEntry::FeatureVariation kMerchantTrustVariations[] = {
+@@ -4325,6 +4325,7 @@ const FeatureEntry::FeatureVariation kAudioDuckingAttenuationVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
