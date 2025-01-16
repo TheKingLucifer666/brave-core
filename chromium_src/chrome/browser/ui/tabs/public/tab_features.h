@@ -8,9 +8,20 @@
 
 #include "base/callback_list.h"
 
-#define Init(...)                 \
-  Init_ChromiumImpl(__VA_ARGS__); \
-  virtual void Init(__VA_ARGS__)
+namespace tab_informer {
+class TabInformer;
+}
+
+#define Init(...)                             \
+  Init_ChromiumImpl(__VA_ARGS__);             \
+  virtual void Init(__VA_ARGS__);             \
+                                              \
+  tab_informer::TabInformer* tab_informer() { \
+    return tab_informer_.get();               \
+  }                                           \
+                                              \
+ private:                                     \
+  std::unique_ptr<tab_informer::TabInformer> tab_informer_
 
 #include "src/chrome/browser/ui/tabs/public/tab_features.h"  // IWYU pragma: export
 #undef Init

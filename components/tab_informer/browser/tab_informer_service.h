@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/tab_informer/common/tab_informer.mojom.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -26,11 +25,9 @@ class COMPONENT_EXPORT(TAB_INFORMER_BROWSER) TabInformerService
   TabInformerService();
   ~TabInformerService() override;
 
-  static content::WebContents* GetFromTab(const mojom::TabPtr& tab);
-
   // Updates the tab with the given |tab_id|. If |tab| is nullptr the tab will
   // be removed.
-  void UpdateTab(int tab_id, mojom::TabPtr tab);
+  void UpdateTab(int32_t tab_id, mojom::TabPtr tab);
 
   void Bind(mojo::PendingReceiver<mojom::TabInformer> receiver);
 

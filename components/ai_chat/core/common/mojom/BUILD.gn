@@ -25,7 +25,5 @@ mojom_component("mojom") {
     "//url/mojom:url_mojom_gurl",
   ]
 
-  public_deps = [
-    "//brave/components/tab_informer/common:mojom",
-  ]
+  public_deps = [ "//brave/components/tab_informer/common:mojom" ]
 }

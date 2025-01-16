@@ -13,9 +13,7 @@ mojom_component("mojom") {
   generate_legacy_js_bindings = true
   webui_module_path = "/"
 
-  sources = [
-    "tab_informer.mojom",
-  ]
+  sources = [ "tab_informer.mojom" ]
 
   public_deps = [
     "//mojo/public/mojom/base",

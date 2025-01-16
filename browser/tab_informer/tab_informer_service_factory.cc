@@ -5,6 +5,8 @@
 
 #include "brave/browser/tab_informer/tab_informer_service_factory.h"
 
+#include <memory>
+
 #include "brave/components/tab_informer/browser/tab_informer_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 

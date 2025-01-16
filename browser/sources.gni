@@ -135,6 +135,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ntp_background",
   "//brave/browser/skus",
   "//brave/browser/sync",
+  "//brave/browser/tab_informer",
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",

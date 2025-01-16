@@ -98,6 +98,8 @@ class PageAPI extends API<State> {
         this.setPartialState({
           tabs
         })
+
+        console.log('tabs', tabs)
       })
     }
 
