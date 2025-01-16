@@ -1,0 +1,12 @@
+static_library("tab_informer") {
+  sources = [
+    "tab_informer_service_factory.cc",
+    "tab_informer_service_factory.h",
+  ]
+
+  deps = [
+    "//brave/components/tab_informer/browser",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+  ]
+}

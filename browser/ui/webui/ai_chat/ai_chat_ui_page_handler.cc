@@ -14,18 +14,19 @@
 #include "base/functional/callback_forward.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
-#include "brave/browser/ui/ai_chat/tab_informer.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/tab_informer/common/tab_informer.mojom.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "components/favicon/core/favicon_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
@@ -284,9 +285,14 @@ void AIChatUIPageHandler::BindRelatedConversation(
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
 
-void AIChatUIPageHandler::AssociateTab(mojom::TabPtr tab,
+void AIChatUIPageHandler::AssociateTab(tab_informer::mojom::TabPtr mojom_tab,
                                        const std::string& conversation_uuid) {
-  auto* contents = ai_chat::TabInformer::GetFromTab(tab);
+  const tabs::TabHandle handle = tabs::TabHandle(mojom_tab->id);
+  tabs::TabInterface* const tab = handle.Get();
+  if (!tab) {
+    return;
+  }
+  auto* contents = tab->GetContents();
   if (!contents) {
     return;
   }

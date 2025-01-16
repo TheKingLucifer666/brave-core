@@ -69,8 +69,8 @@ ios_objc_mojom_wrappers("ai_chat_mojom_wrappers") {
   mojom_target = "//brave/components/ai_chat/core/common/mojom"
   sources = [
     "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom",
-    "//brave/components/ai_chat/core/common/mojom/tab_informer.mojom",
     "//brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom",
+    "//brave/components/tab_informer/common/tab_informer.mojom",
   ]
   output_dir = "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios"
   generate_namespace = false

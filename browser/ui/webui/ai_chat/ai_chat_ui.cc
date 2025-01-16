@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/tab_informer/tab_informer_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
@@ -22,6 +23,7 @@
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/tab_informer/browser/tab_informer_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
@@ -165,11 +167,14 @@ void AIChatUI::BindInterface(
 }
 
 void AIChatUI::BindInterface(
-    mojo::PendingReceiver<ai_chat::mojom::TabInformer> tab_informer_receiver) {
-#if !BUILDFLAG(IS_ANDROID)
-  tab_informer_ = std::make_unique<ai_chat::TabInformer>(
-      std::move(tab_informer_receiver), web_ui()->GetWebContents());
-#endif
+    mojo::PendingReceiver<tab_informer::mojom::TabInformer>
+        tab_informer_receiver) {
+  auto* service =
+      tab_informer::TabInformerServiceFactory::GetForBrowserContext(profile_);
+  if (!service) {
+    return;
+  }
+  service->Bind(std::move(tab_informer_receiver));
 }
 
 bool AIChatUIConfig::IsWebUIEnabled(content::BrowserContext* browser_context) {

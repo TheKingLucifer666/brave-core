@@ -19,7 +19,7 @@ export type State = Mojom.ServiceState & {
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
   allActions: Mojom.ActionGroup[]
-  windows: Mojom.Window[]
+  tabs: Mojom.Tab[]
 }
 
 export const defaultUIState: State = {
@@ -35,7 +35,7 @@ export const defaultUIState: State = {
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
   allActions: [],
-  windows: []
+  tabs: []
 }
 
 // Owns connections to the browser via mojom as well as global state
@@ -94,9 +94,9 @@ class PageAPI extends API<State> {
     // If we're in standalone mode, listen for tab changes so we can show a picker.
     if (isStandalone) {
       Mojom.TabInformer.getRemote().addListener(this.tabObserver.$.bindNewPipeAndPassRemote())
-      this.tabObserver.tabsChanged.addListener((windows: Mojom.Window[]) => {
+      this.tabObserver.tabsChanged.addListener((tabs: Mojom.Tab[]) => {
         this.setPartialState({
-          windows
+          tabs
         })
       })
     }

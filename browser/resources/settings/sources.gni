@@ -181,12 +181,14 @@ brave_settings_ts_extra_deps =
 brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/settings_helper.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ai_chat.mojom-webui.ts",
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_informer.mojom-webui.ts",
+  "$root_gen_dir/brave/components/tab_informer/common/tab_informer.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
 ]
 
-brave_settings_mojo_files_deps =
-    [ "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator" ]
+brave_settings_mojo_files_deps = [
+  "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator",
+  "//brave/components/tab_informer/common:mojom_ts__generator",
+]
 
 brave_settings_ts_deps = [
   "//third_party/lit/v3_0:build_ts",

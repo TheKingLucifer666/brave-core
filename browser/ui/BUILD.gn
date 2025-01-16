@@ -50,6 +50,7 @@ source_set("ui") {
 
   deps = [
     "//brave/browser/ai_chat",
+    "//brave/browser/tab_informer",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
@@ -156,8 +157,6 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
-      "ai_chat/tab_informer.cc",
-      "ai_chat/tab_informer.h",
       "bookmark/bookmark_helper.cc",
       "bookmark/bookmark_helper.h",
       "bookmark/bookmark_prefs_service.cc",

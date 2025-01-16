@@ -51,7 +51,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/tab_informer.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
@@ -95,6 +94,7 @@
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tab_informer/common/tab_informer.mojom.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
@@ -626,7 +626,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
         .Add<ai_chat::mojom::Service>()
-        .Add<ai_chat::mojom::TabInformer>();
+        .Add<tab_informer::mojom::TabInformer>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()
         .Add<ai_chat::mojom::UntrustedUIHandler>()
         .Add<ai_chat::mojom::UntrustedConversationHandler>();

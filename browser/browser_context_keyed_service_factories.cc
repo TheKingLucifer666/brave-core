@@ -32,6 +32,7 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
+#include "brave/browser/tab_informer/tab_informer_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
@@ -182,6 +183,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   ai_chat::AIChatServiceFactory::GetInstance();
   ai_chat::ModelServiceFactory::GetInstance();
+
+  tab_informer::TabInformerServiceFactory::GetInstance();
 }
 
 }  // namespace brave

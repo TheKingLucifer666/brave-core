@@ -60,7 +60,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
       override;
-  void AssociateTab(mojom::TabPtr tab,
+  void AssociateTab(tab_informer::mojom::TabPtr tab,
                     const std::string& conversation_uuid) override;
   void NewConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
