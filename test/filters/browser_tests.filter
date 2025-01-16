@@ -77,6 +77,7 @@
 -NotificationContentDetectionShowWarningsEnabledBrowserTest.AllowlistedSiteNotificationGetsDisplayed/*
 -NotificationContentDetectionShowWarningsEnabledBrowserTest.NonAllowlistedSiteNotificationGetsDisplayed/*
 -NotificationContentDetectionShowWarningsEnabledBrowserTest.NotificationDisplayedWhenModelNotAvailable/*
+-NotificationContentDetectionShowWarningsEnabledBrowserTest.OriginalNotificationDisplayedWhenUserAllowlistsOrigin/*
 -OnDeviceModelExecutionEnabledBrowserTest.CanCreateOnDeviceSessionIn*
 -OnDeviceModelExecutionEnabledBrowserTest.GetOnDeviceModelEligibilityIn*
 -OnDeviceModelExecutionEnabledBrowserTest.GetSamplingParamsConfig
@@ -287,6 +288,7 @@
 -WebHidWebViewTest.PermissionsAPIEmbedderHasAccessDenyHid/InnerWebContents
 -WebHidWebViewTest.PermissionsAPIEmbedderHasAccessDenyHid/MPArch
 -WebViewBluetoothTest.Shim_TestEnabledInTabButNotInWebView/InnerWebContents
+-WebViewBluetoothTest.Shim_TestEnabledInTabButNotInWebView/MPArch
 
 # These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
 # always return false
@@ -664,6 +666,7 @@
 -ProfileMenuClickTest_SyncError_UnoEnabled.ProfileMenuClickTest_*
 -ProfileMenuClickTest_SyncPaused_UnoDisabled.ProfileMenuClickTest_*
 -ProfileMenuClickTest_SyncPaused_UnoEnabled.ProfileMenuClickTest_*
+-ProfileMenuClickTest_WebOnly.ProfileMenuClickTest_WebOnly/*
 -ProfileMenuClickTest_WithPendingAccount.ProfileMenuClickTest_WithPendingAccount/*
 -ProfileMenuClickTest_WithUnconsentedPrimaryAccount_UnoDisabled.ProfileMenuClickTest_*
 -ProfileMenuClickTest_WithUnconsentedPrimaryAccount_UnoEnabled.ProfileMenuClickTest_*
@@ -671,6 +674,7 @@
 -SigninViewControllerBrowserCookieParamTest.SignOut/NoCookie
 -SigninViewControllerBrowserImplicitSigninTest.NoPrompt
 -SigninViewControllerBrowserTest.SignoutOrReauthWithPrompt_Reauth
+-SigninViewControllerBrowserTest.UpdateAccessPointOfSignInTab
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAborted/*
 -TurnSyncOnHelperBrowserTest.UndoSyncRemoveAccount
 -TurnSyncOnHelperBrowserTestWithParam.PrimaryAccountResetAfterSyncOptInFlowAborted/*
@@ -701,6 +705,7 @@
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldNotBindEncryptionKeysApiInPrerendering
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_LongNameExtension
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_NormalExtension
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate/0
 
 # These tests fail because they expect being signed into the primary account on
 # the web.
@@ -1248,6 +1253,22 @@
 # These tests fail or time out because IdentityManager never loads refresh
 # tokens
 -DisallowManagedProfileSignoutFeature/UserPolicySigninServiceTest.*
+
+# These tests fail with "GaiaCookieManagerService::ListAccounts: Failed to parse
+# list accounts data from pref"
+-All/PartitionedBlobUrlUsagePolicyBrowserTestP.FetchingPartitionedBlobUrlUsageEnterprisePolicy/1
+-All/SupervisedUserParentAccessObserverTest.CompletionCallbackExecution/WithQueryResultWhenEndPacpUrlNotReached
+-All/SupervisedUserParentAccessObserverTest.CompletionCallbackExecution/WithQueryResultWhenEndPacpUrlReached
+-All/SupervisedUserParentAccessObserverTest.CompletionCallbackExecution/WithoutQueryResultWhenEndPacpUrlReached
+-ClassifyUrlNavigationThrottleTest.RecordsAllowedAsync
+-ClassifyUrlNavigationThrottleTest.RecordsAllowedOnManualList
+-ClassifyUrlNavigationThrottleTest.RecordsThrottledAsync
+-ClassifyUrlNavigationThrottleTest.RecordsThrottledFromManualBlocklist
+-PasswordChangeBrowserTest.NewPasswordIsSaved
+-PasswordChangeBrowserTest.OldPasswordIsUpdated
+-PasswordChangeBrowserTest.PasswordChangeSubmissionFailed
+-ProfileMenuViewWebOnlyTest.ContinueAs
+-ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithProfileNotLoaded
 
 # These tests fail because we disable DIPS via features::kDIPS
 -All/DIPSBounceDetectorBFCacheTest.*/*
@@ -1967,11 +1988,21 @@
 -SendTabToSelfToolbarIconControllerTest.ReplaceExistingEntry
 -SendTabToSelfToolbarIconControllerTest.StorePendingNewEntry
 
-# These test fail because kToolbarPinning is disabled
+# These tests fail because kToolbarPinning is disabled
 -CastBrowserControllerTest.PausedIcon
 -CastBrowserControllerTest.UpdateIssues
 -ChromeLabsMultipleFeaturesUiTest.InvokeUi_default
 -ChromeLabsUiTest.InvokeUi_default
+-DownloadToolbarUIControllerBrowserTest.ButtonPressWithNoRecentDownloads
+-DownloadToolbarUIControllerBrowserTest.ButtonPressWithRecentDownloads
+-DownloadToolbarUIControllerBrowserTest.ButtonShowsForDownloadingItems
+-DownloadToolbarUIControllerBrowserTest.ButtonShowsInNewBrowserWithRecentDownload
+-DownloadToolbarUIControllerBrowserTest.ControllerUpdatesButtonEnabledState
+-DownloadToolbarUIControllerBrowserTest.DialogAutoCloses
+-DownloadToolbarUIControllerBrowserTest.HideDoesNotRemoveButtonIfPinned
+-DownloadToolbarUIControllerBrowserTest.OpenPrimaryDialog
+-DownloadToolbarUIControllerBrowserTest.OpenSecurityDialog
+-DownloadToolbarUIControllerBrowserTest.ShowHide
 
 # These tests fail because we stub captions::IsLiveCaptionFeatureSuppported to
 # always return false
