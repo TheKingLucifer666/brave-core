@@ -117,6 +117,7 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.content_public.browser.NavigationHandle;
@@ -134,6 +135,7 @@ import org.chromium.url.GURL;
 import org.chromium.url.mojom.Url;
 
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -516,6 +518,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
                         dismissShieldsTooltip();
                         hidePlaylistButton();
+                        mPublisherId = "";
                     }
 
                     @Override
@@ -1214,9 +1217,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void showRewardsPage() {
         String rewardsUrl = BraveActivity.BRAVE_REWARDS_SETTINGS_URL;
         if (mPublisherId != null && !mPublisherId.isEmpty()) {
-            rewardsUrl += "?creator=" + mPublisherId;
+            rewardsUrl += "?creator=" + URLEncoder.encode(mPublisherId);
         }
-        RewardsPageActivity.showPage(getContext(), rewardsUrl);
+        Log.e(TAG, "rewardsUrl: " + rewardsUrl);
+        TabUtils.openUrlInNewTab(false, rewardsUrl);
+        // RewardsPageActivity.showPage(getContext(), rewardsUrl);
     }
 
     private void maybeShowWalletPanel() {
