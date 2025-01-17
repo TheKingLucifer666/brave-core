@@ -23,8 +23,6 @@ public class BraveVpnProfileUtils {
     private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;
     private static Object sMutex = new Object();
 
-    private static final int NOTIFICATION_PERMISSION_CODE = 123;
-
     private BraveVpnProfileUtils() {}
 
     public static BraveVpnProfileUtils getInstance() {
