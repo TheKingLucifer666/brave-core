@@ -148,6 +148,12 @@ class ConversationHandler : public mojom::ConversationHandler,
     base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
   };
 
+  class UploadedContentDelegate {
+    virtual std::vector<std::vector<uint8_t>>& GetUploadedImages() = 0;
+    virtual size_t GetUploadedImagesSize() = 0;
+    virtual void RemoveUploadedImage(size_t index) = 0;
+  };
+
   class Observer : public base::CheckedObserver {
    public:
     ~Observer() override {}

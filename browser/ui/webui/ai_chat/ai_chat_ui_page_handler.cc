@@ -98,9 +98,11 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
 }
 
 void AIChatUIPageHandler::UploadImage(UploadImageCallback callback) {
-  upload_image_helper_ =
-      std::make_unique<UploadImageHelper>(owner_web_contents_, profile_);
-  upload_image_helper_->UploadImage(
+  if (!upload_file_helper_) {
+    upload_file_helper_ =
+        std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
+  }
+  upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
       std::move(callback));
 }
