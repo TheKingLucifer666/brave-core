@@ -7,6 +7,8 @@ import("//brave/tools/crates/sources.gni")
 import("//brave/tools/crates/wasm_pack/sources.gni")
 
 action("build_wasm_pack") {
+  assert(current_toolchain == host_toolchain)
+
   script = "//build/gn_run_binary.py"
 
   wasm_pack_src = "v0_13/crate"

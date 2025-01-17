@@ -16,7 +16,7 @@ template("rust_to_wasm") {
   }
 
   action_foreach(target_name) {
-    deps = [ "//brave/tools/crates/wasm_pack:build_wasm_pack" ]
+    deps = [ "//brave/tools/crates/wasm_pack:build_wasm_pack($host_toolchain)" ]
     if (defined(invoker.deps)) {
       deps += invoker.deps
     }
