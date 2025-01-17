@@ -1255,7 +1255,7 @@
 -DisallowManagedProfileSignoutFeature/UserPolicySigninServiceTest.*
 
 # These tests fail with "GaiaCookieManagerService::ListAccounts: Failed to parse
-# list accounts data from pref"
+# list accounts data from pref", which ultimately leads to an OAuth error
 -All/PartitionedBlobUrlUsagePolicyBrowserTestP.FetchingPartitionedBlobUrlUsageEnterprisePolicy/1
 -All/SupervisedUserParentAccessObserverTest.CompletionCallbackExecution/WithQueryResultWhenEndPacpUrlNotReached
 -All/SupervisedUserParentAccessObserverTest.CompletionCallbackExecution/WithQueryResultWhenEndPacpUrlReached
