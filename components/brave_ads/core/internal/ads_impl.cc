@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
@@ -409,8 +408,8 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
 }
 
 void AdsImpl::FailedToInitialize(InitializeCallback callback) {
-  TRACE_EVENT_NESTABLE_ASYNC_END0(kTraceEventCategory, "AdsImpl::Initialize",
-                                  TRACE_ID_LOCAL(this));
+  TRACE_EVENT_NESTABLE_ASYNC_END1(kTraceEventCategory, "AdsImpl::Initialize",
+                                  TRACE_ID_LOCAL(this), "success", false);
 
   BLOG(0, "Failed to initialize ads");
 
@@ -419,8 +418,8 @@ void AdsImpl::FailedToInitialize(InitializeCallback callback) {
 
 void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                                       InitializeCallback callback) {
-  TRACE_EVENT_NESTABLE_ASYNC_END0(kTraceEventCategory, "AdsImpl::Initialize",
-                                  TRACE_ID_LOCAL(this));
+  TRACE_EVENT_NESTABLE_ASYNC_END1(kTraceEventCategory, "AdsImpl::Initialize",
+                                  TRACE_ID_LOCAL(this), "success", true);
 
   BLOG(1, "Successfully initialized ads");
 
@@ -454,12 +453,6 @@ void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                       InitializeCallback callback,
                                       bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to load client state");
-    base::debug::DumpWithoutCrashing();
-
     return FailedToInitialize(std::move(callback));
   }
 
@@ -495,12 +488,6 @@ void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                             InitializeCallback callback,
                                             bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to load confirmation state");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to load confirmation state");
     return FailedToInitialize(std::move(callback));
   }

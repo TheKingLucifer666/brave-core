@@ -1,17 +1,21 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved. This Source Code Form is subject to
- * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
- * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.vpn.utils;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
@@ -22,6 +26,8 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 public class BraveVpnProfileUtils {
     private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;
     private static Object sMutex = new Object();
+
+    private static final int NOTIFICATION_PERMISSION_CODE = 123;
 
     private BraveVpnProfileUtils() {}
 
