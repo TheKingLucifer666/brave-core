@@ -301,6 +301,10 @@ interface ImageBackgroundProps {
   image: string
 }
 
+interface HtmlBackgroundProps {
+  html: string
+}
+
 export const StyledSelectionBorder = styled('div') <SelectionProps>`
   position: relative;
   width: 100%;
@@ -332,12 +336,12 @@ export const StyledUploadIconContainer = styled('div') <SelectionProps>`
   justify-content: center;
   gap: 16px;
   ${p => p.selected
-    ? css`    
-      background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'}; 
+    ? css`
+      background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'};
       border-radius: 8px;`
     : css`
-      border: 2px solid #E9E9F4; 
-      border-radius: 10px; 
+      border: 2px solid #E9E9F4;
+      border-radius: 10px;
   `}
 `
 
@@ -361,6 +365,19 @@ export const StyledCustomBackgroundOptionColor = styled('div') <SelectionProps &
     ? css`border-radius: 8px;`
     : css`border-radius: 10px;`}
   background: ${p => p.colorValue};
+`
+
+export const StyledCustomBackgroundOptionHtml = styled('div') <SelectionProps & HtmlBackgroundProps>`
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-position: center;
+  background-size: cover;
+  ${p => p.selected
+    ? css`border-radius: 8px;`
+    : css`border-radius: 10px;`}
+  background-image: url("${p => p.html}");
 `
 
 export const StyledUploadLabel = styled('div')`

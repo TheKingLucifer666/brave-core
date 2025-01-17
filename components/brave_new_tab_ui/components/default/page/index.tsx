@@ -26,9 +26,15 @@ interface HasImageProps {
   colorForBackground?: string
 }
 
+interface HasHtmlProps {
+  hasHtml: boolean
+  htmlHasLoaded: boolean
+  htmlSrc?: string
+}
+
 type AppProps = {
   dataIsReady: boolean
-} & HasImageProps
+} & HasImageProps & HasHtmlProps
 
 type PageProps = {
   showClock: boolean
@@ -36,7 +42,7 @@ type PageProps = {
   showCryptoContent: boolean
   showTopSites: boolean
   showBrandedWallpaper: boolean
-} & HasImageProps
+} & HasImageProps & HasHtmlProps
 
 function getItemRowCount(p: PageProps): number {
   let right = (p.showClock ? 1 : 0) + (p.showCryptoContent ? 2 : 0)
@@ -110,6 +116,17 @@ const StyledPage = styled('div') <PageProps>`
   }
 `
 
+export const HtmlBackground = styled('iframe') <HasHtmlProps>`
+  --bg-opacity: ${p => p.htmlHasLoaded ? 1 : 0};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  z-index: -1;
+`
+
 export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> = (props) => {
   // Note(petemill): When we scroll to the bottom, if there's an
   // extra scroll area (Brave News) then we "sticky" the Page at
@@ -167,18 +184,30 @@ export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> =
   )
 }
 
+//    #iframe { position: absolute; float: left; clear: both; width: 100%; height: 350px; z-index: 0; left no-repeat; }
+
 export const BackgroundHtml5Ntt = styled('iframe')`
-  position: absolute;
+  position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
-  right: 0;
-  padding 0;
-  margin: 0;
-  border: 0;
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
+  border: none;
   z-index: -1;
 `
+
+// export const BackgroundHtml5Ntt = styled('iframe')`
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   padding 0;
+//   margin: 0;
+//   border: 0;
+//   width: 100%; height: 100%;
+//   z-index: -1;
+// `
 
 export const GridItemStats = styled('section')`
   grid-column: 1 / span 2;
@@ -327,26 +356,26 @@ export const FooterContent = styled('div')`
 `
 
 // Gets the value of the CSS `background` property.
-function getBackground(p: HasImageProps) {
-  if (!p.hasImage) {
-    return p.colorForBackground || `linear-gradient(to bottom right, #4D54D1, #A51C7B 50%, #EE4A37 100%)`
-  }
+function getBackground(p: HasImageProps & HasHtmlProps) {
+  // if (!p.hasImage) {
+  //   return p.colorForBackground || `linear-gradient(to bottom right, #4D54D1, #A51C7B 50%, #EE4A37 100%)`
+  // }
 
-  if (p.hasImage && p.imageSrc) {
-    // Note: We force percent encoding for ( and ) because Chromium seems to be
-    // ignoring the fact that the URL is quoted for these.
-    return `linear-gradient(
-      rgba(0, 0, 0, 0.8),
-      rgba(0, 0, 0, 0) 35%,
-      rgba(0, 0, 0, 0) 80%,
-      rgba(0, 0, 0, 0.6) 100%
-    ), url("${p.imageSrc.replaceAll('(', '%28').replaceAll(')', '%29')}")`
-  }
+  // if (p.hasImage && p.imageSrc) {
+  //   // Note: We force percent encoding for ( and ) because Chromium seems to be
+  //   // ignoring the fact that the URL is quoted for these.
+  //   return `linear-gradient(
+  //     rgba(0, 0, 0, 0.8),
+  //     rgba(0, 0, 0, 0) 35%,
+  //     rgba(0, 0, 0, 0) 80%,
+  //     rgba(0, 0, 0, 0.6) 100%
+  //   ), url("${p.imageSrc.replaceAll('(', '%28').replaceAll(')', '%29')}")`
+  // }
 
   return ''
 }
 
-function getPageBackground(p: HasImageProps) {
+function getPageBackground(p: HasImageProps & HasHtmlProps) {
   // Page background is duplicated since a backdrop-filter's
   // ancestor which has blur must also have background.
   // In our case, Widgets are the backdrop-filter element
@@ -356,7 +385,22 @@ function getPageBackground(p: HasImageProps) {
   // Page's ancestor: App.
   // Use a :before pseudo element so that we can fade the image
   // in when it is loaded.
-  return css<HasImageProps>`
+  if (p.hasHtml && p.htmlSrc) {
+    return css<HasImageProps & HasHtmlProps>`
+      &:before {
+        pointer-events: none;
+        content: "";
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        right: 0;
+      }
+    `
+  }
+
+  return css<HasImageProps & HasHtmlProps>`
     &:before {
       pointer-events: none;
       content: "";
@@ -380,7 +424,7 @@ function getPageBackground(p: HasImageProps) {
   `
 }
 
-export const App = styled('div') <AppProps & HasImageProps>`
+export const App = styled('div') <AppProps & HasImageProps & HasHtmlProps>`
   --bg-opacity: ${p => p.imageHasLoaded ? 1 : 0};
   position: relative;
   box-sizing: border-box;

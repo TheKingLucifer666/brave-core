@@ -14,6 +14,11 @@ const string kRandomGradientColorValue = "gradient";
 const int8 kMaxCustomImageBackgrounds = 24;
 
 struct BraveBackground {
+  // Type of background. Can be:
+  // - "image": For custom image backgrounds
+  // - "html": For HTML-based backgrounds
+  string type;
+
   string name;
   string author;
   url.mojom.Url image_url;
@@ -24,10 +29,10 @@ struct BraveBackground {
 struct CustomBackground {
   url.mojom.Url url;
 
-  // |color| is a 
-  //   * color value for css background property or 'gradient' when 
+  // |color| is a
+  //   * color value for css background property or 'gradient' when
   //     |use_random_item| is false.
-  //   * either kRandomSlidColorValue or kRandomGradientColorValue when 
+  //   * either kRandomSlidColorValue or kRandomGradientColorValue when
   //     |use_random_item| is true
   string color;
 
@@ -68,11 +73,11 @@ interface PageHandler {
   // When |seleteceBackground| is empty, should use random background.
   UseBraveBackground(string selected_background);
   GetBraveBackgrounds() => (array<BraveBackground> backgrounds);
-  
-  // |color| is a 
-  //   * color value for css background property or 'gradient' when 
+
+  // |color| is a
+  //   * color value for css background property or 'gradient' when
   //     |use_random_color| is false.
-  //   * either kRandomSlidColorValue or kRandomGradientColorValue when 
+  //   * either kRandomSlidColorValue or kRandomGradientColorValue when
   //     |use_random_color| is true
   UseColorBackground(string color, bool use_random_color);
 

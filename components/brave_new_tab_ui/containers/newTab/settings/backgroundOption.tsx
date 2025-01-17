@@ -10,6 +10,7 @@ import {
   StyledCustomBackgroundOption,
   StyledCustomBackgroundOptionColor,
   StyledCustomBackgroundOptionImage,
+  StyledCustomBackgroundOptionHtml,
   StyledSelectionBorder
 } from '../../../components/default'
 
@@ -54,6 +55,8 @@ export default function BackgroundOption ({ background, selected, onSelectValue,
           {
             background.type === 'color'
               ? <StyledCustomBackgroundOptionColor colorValue={background.wallpaperColor} selected={selected}/>
+              : background.type === 'html' ?
+                <StyledCustomBackgroundOptionHtml html={background.wallpaperHtmlUrl} selected={selected}/>
               : <StyledCustomBackgroundOptionImage image={background.wallpaperImageUrl } selected={selected}/>
           }
       </StyledSelectionBorder>

@@ -87,14 +87,34 @@ function GetBackgroundImageSrc (props: Props) {
   }
   if (props.newTabData.brandedWallpaper) {
     const wallpaperData = props.newTabData.brandedWallpaper
-    if (wallpaperData.wallpaperImageUrl) {
-      return wallpaperData.wallpaperImageUrl
+    if (wallpaperData.wallpaperUrl) {
+      return wallpaperData.wallpaperUrl
     }
   }
 
   if (props.newTabData.backgroundWallpaper?.type === 'image' ||
       props.newTabData.backgroundWallpaper?.type === 'brave') {
     return props.newTabData.backgroundWallpaper.wallpaperImageUrl
+  }
+
+  return undefined
+}
+
+function GetBackgroundHtmlSrc (props: Props) {
+  if (!props.newTabData.showBackgroundImage &&
+    (!props.newTabData.brandedWallpaper || props.newTabData.brandedWallpaper.isSponsored
+      || props.newTabData.brandedWallpaper.type !== 'html')) {
+    return undefined
+  }
+  if (props.newTabData.brandedWallpaper) {
+    const wallpaperData = props.newTabData.brandedWallpaper
+    if (wallpaperData.wallpaperUrl) {
+      return wallpaperData.wallpaperUrl
+    }
+  }
+
+  if (props.newTabData.backgroundWallpaper?.type === 'html') {
+    return props.newTabData.backgroundWallpaper.wallpaperHtmlUrl
   }
 
   return undefined
@@ -138,9 +158,11 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   imgCache: HTMLImageElement
+  htmlCache: HTMLIFrameElement
   braveNewsPromptTimerId: number
   hasInitBraveNews: boolean = false
   imageSource?: string = undefined
+  htmlSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
@@ -152,6 +174,7 @@ class NewTabPage extends React.Component<Props, State> {
     // if a notification is open at component mounting time, close it
     this.props.actions.showTilesRemovedNotice(false)
     this.imageSource = GetBackgroundImageSrc(this.props)
+    this.htmlSource = GetBackgroundHtmlSrc(this.props)
     this.trackCachedImage()
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
@@ -165,7 +188,7 @@ class NewTabPage extends React.Component<Props, State> {
     window.addEventListener('resize', this.handleResize)
     window.navigation.addEventListener('currententrychange', this.checkShouldOpenSettings)
 
-    this.createHtml5NttBackground()
+    //this.createHtml5NttBackground()
   }
 
   componentWillUnmount () {
@@ -184,8 +207,16 @@ class NewTabPage extends React.Component<Props, State> {
     if (newImageSource && oldImageSource !== newImageSource) {
       this.trackCachedImage()
     }
-    if (oldImageSource &&
-      !newImageSource) {
+
+    const oldHtmlSource = GetBackgroundHtmlSrc(prevProps)
+    const newHtmlSource = GetBackgroundHtmlSrc(this.props)
+    this.htmlSource = newHtmlSource
+    if (newHtmlSource && oldHtmlSource !== newHtmlSource) {
+      this.trackCachedHtml()
+    }
+
+    if ((oldImageSource &&
+      !newImageSource) || (oldHtmlSource && !newHtmlSource)) {
       // reset loaded state
       console.debug('reset image loaded state due to removing image source')
       this.setState({ backgroundHasLoaded: false })
@@ -238,18 +269,14 @@ class NewTabPage extends React.Component<Props, State> {
   createHtml5NttBackground() {
     let element = document.createElement('iframe');
     element.id = 'backgroundHtml5Ntt';
-    element.src = "chrome-untrusted://html5ntt/"
+    element.src = "chrome-untrusted://html5ntt/";
 
-    element.style.position = 'absolute';
+    element.style.position = 'fixed';
     element.style.top = '0';
-    element.style.bottom = '0';
     element.style.left = '0';
-    element.style.right = '0';
-    element.style.padding = '0';
-    element.style.margin = '0';
-    element.style.border = '0';
     element.style.width = '100%';
     element.style.height = '100%';
+    element.style.border = 'none';
     element.style.zIndex = '-1';
 
     document.body.appendChild(element);
@@ -274,6 +301,30 @@ class NewTabPage extends React.Component<Props, State> {
         })
       })
       imgCache.addEventListener('error', (e) => {
+        console.debug('image error', e)
+      })
+    }
+  }
+
+  trackCachedHtml () {
+    console.debug('trackCachedHtml')
+    if (this.state.backgroundHasLoaded) {
+      console.debug('Resetting to new image')
+      this.setState({ backgroundHasLoaded: false })
+    }
+    if (this.htmlSource) {
+      const htmlCache = new HTMLIFrameElement()
+      // Store Html in class so it doesn't go out of scope
+      this.htmlCache = htmlCache
+      htmlCache.src = this.htmlSource
+      console.debug('image start loading...')
+      htmlCache.addEventListener('load', () => {
+        console.debug('image loaded')
+        this.setState({
+          backgroundHasLoaded: true
+        })
+      })
+      htmlCache.addEventListener('error', (e) => {
         console.debug('image error', e)
       })
     }
@@ -637,6 +688,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const hasImage = this.imageSource !== undefined
+    const hasHtml = this.htmlSource !== undefined
     const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
 
     const hasWallpaperInfo = newTabData.backgroundWallpaper?.type === 'brave'
@@ -670,14 +722,30 @@ class NewTabPage extends React.Component<Props, State> {
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
         colorForBackground={colorForBackground}
+        hasHtml={hasHtml}
+        htmlSrc={this.htmlSource}
+        htmlHasLoaded={this.state.backgroundHasLoaded}
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews && !defaultState.featureFlagBraveNewsFeedV2Enabled) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
         <BraveNewsContextProvider>
         <EngineContextProvider>
+
+        {
+          hasHtml &&
+            <Page.HtmlBackground
+            src={this.htmlSource}
+            hasHtml={hasHtml}
+            htmlHasLoaded={this.state.backgroundHasLoaded}>
+          </Page.HtmlBackground>
+        }
+
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
             imageHasLoaded={this.state.backgroundHasLoaded}
+            hasHtml={hasHtml}
+            htmlSrc={this.htmlSource}
+            htmlHasLoaded={this.state.backgroundHasLoaded}
             showClock={showClock}
             showStats={showStats}
             colorForBackground={colorForBackground}

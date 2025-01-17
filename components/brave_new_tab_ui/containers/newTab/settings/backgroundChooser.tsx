@@ -45,13 +45,14 @@ function BackgroundChooser ({ title, backgrounds, onBack, onSelectValue, current
           />
         </SettingsRow>
         <StyledCustomBackgroundSettings>
-          {backgrounds.map((background) => {
-            const value = background.type === 'color' ? background.wallpaperColor : background.wallpaperImageUrl
-            return <BackgroundOption key={value} background={background}
-                      selected={!usingRandomColor && currentValue === value}
-                      onSelectValue={() => onSelectValue(value, /* useRandomColor= */false)}
-                      onRemoveValue={onRemoveValue ? () => { onRemoveValue(value) } : undefined} />
-          })}
+        {backgrounds.map((background) => {
+          const value = background.type === 'color' ? background.wallpaperColor :
+            background.type == 'html' ? background.wallpaperHtmlUrl : background.wallpaperImageUrl
+          return <BackgroundOption key={value} background={background}
+            selected={!usingRandomColor && currentValue === value}
+            onSelectValue={() => onSelectValue(value, /* useRandomColor= */false)}
+            onRemoveValue={onRemoveValue ? () => { onRemoveValue(value) } : undefined} />
+        })}
           { renderExtraButton?.() }
         </StyledCustomBackgroundSettings>
       </div>

@@ -56,7 +56,6 @@ struct Logo {
 };
 
 struct HtmlBackground {
-  base::FilePath html_file;
   std::vector<base::FilePath> assets;
 
   HtmlBackground();
@@ -65,8 +64,14 @@ struct HtmlBackground {
   ~HtmlBackground();
 };
 
+enum WallpaperType {
+  kImage,
+  kHtml,
+};
+
 struct SponsoredBackground {
-  base::FilePath image_file;
+  WallpaperType wallpaper_type;
+  base::FilePath wallpaper_file;
   HtmlBackground html;
   gfx::Point focal_point;
   brave_ads::ConditionMatcherMap condition_matchers;
@@ -79,7 +84,7 @@ struct SponsoredBackground {
 
   SponsoredBackground();
   // For unit test.
-  SponsoredBackground(const base::FilePath& image_file_path,
+  SponsoredBackground(const base::FilePath& wallpaper_file_path,
                       const gfx::Point& point,
                       const Logo& test_logo,
                       const std::string& creative_instance_id);

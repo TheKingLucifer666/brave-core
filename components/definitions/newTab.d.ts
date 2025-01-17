@@ -30,7 +30,13 @@ declare namespace NewTab {
     random?: boolean
   }
 
-  export type BackgroundWallpaper = ColorBackground | ImageBackground | BraveBackground
+  // Custom HTML background.
+  export type HtmlBackground = {
+    type: 'html'
+    wallpaperHtmlUrl: string
+  }
+
+  export type BackgroundWallpaper = ColorBackground | ImageBackground | BraveBackground | HtmlBackground
 
   export type BrandedWallpaperLogo = {
     image: string
@@ -40,7 +46,8 @@ declare namespace NewTab {
   }
 
   export type BrandedWallpaper = {
-    wallpaperImageUrl: string
+    type: string
+    wallpaperUrl: string
     isSponsored: boolean
     creativeInstanceId: string
     wallpaperId: string

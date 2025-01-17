@@ -56,7 +56,7 @@ inline constexpr char kCreativeInstanceIDKey[] = "creativeInstanceId";
 inline constexpr char kWallpaperIDKey[] = "wallpaperId";
 
 inline constexpr char kIsSponsoredKey[] = "isSponsored";
-inline constexpr char kWallpaperImageURLKey[] = "wallpaperImageUrl";
+inline constexpr char kWallpaperURLKey[] = "wallpaperUrl";
 inline constexpr char kWallpaperImagePathKey[] = "wallpaperImagePath";
 inline constexpr char kWallpaperColorKey[] = "wallpaperColor";
 inline constexpr char kWallpaperTypeKey[] = "type";

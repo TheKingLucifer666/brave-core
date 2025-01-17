@@ -121,11 +121,11 @@ HtmlBackground::~HtmlBackground() = default;
 
 SponsoredBackground::SponsoredBackground() = default;
 SponsoredBackground::SponsoredBackground(
-    const base::FilePath& image_file_path,
+    const base::FilePath& wallpaper_file_path,
     const gfx::Point& point,
     const Logo& test_logo,
     const std::string& creative_instance_id)
-    : image_file(image_file_path),
+    : wallpaper_file(wallpaper_file_path),
       focal_point(point),
       creative_instance_id(creative_instance_id),
       logo(test_logo) {}
@@ -237,10 +237,12 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
 
       SponsoredBackground background;
       if (const std::string* image_url = wallpaper.FindString(kImageURLKey)) {
-        background.image_file = installed_dir.AppendASCII(*image_url);
+        background.wallpaper_type = WallpaperType::kImage;
+        background.wallpaper_file = installed_dir.AppendASCII(*image_url);
       } else if (const std::string* html_url =
                      wallpaper.FindString(kHtmlURLKey)) {
-        background.html.html_file = installed_dir.AppendASCII(*html_url);
+        background.wallpaper_type = WallpaperType::kHtml;
+        background.wallpaper_file = installed_dir.AppendASCII(*html_url);
         const auto* assets = wallpaper.FindList(kAssetsKey);
         if (!assets) {
           VLOG(6) << "No assets found for HTML5NTT background";
@@ -257,14 +259,14 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
         }
 
         if (base::ranges::find(background.html.assets,
-                               background.html.html_file) ==
+                               background.wallpaper_file) ==
             background.html.assets.end()) {
           VLOG(6) << "HTML5NTT background file is also listed as an asset";
           continue;
         }
 
         VLOG(6) << "Parsed HTML5NTT background: "
-                << background.html.html_file.AsUTF8Unsafe();
+                << background.wallpaper_file.AsUTF8Unsafe();
         for (const auto& asset : background.html.assets) {
           VLOG(6) << "HTML5NTT background asset: " << asset.AsUTF8Unsafe();
         }
@@ -385,11 +387,16 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   data.Set(kWallpaperIDKey, base::Uuid::GenerateRandomV4().AsLowercaseString());
 
   const auto background_file_path =
-      campaign.backgrounds[background_index].image_file;
-  const std::string wallpaper_image_url =
+      campaign.backgrounds[background_index].wallpaper_file;
+  const std::string wallpaper_url =
       url_prefix + background_file_path.BaseName().AsUTF8Unsafe();
 
-  data.Set(kWallpaperImageURLKey, wallpaper_image_url);
+  data.Set(kWallpaperTypeKey,
+           campaign.backgrounds[background_index].wallpaper_type ==
+                   WallpaperType::kImage
+               ? "brave"
+               : "html");
+  data.Set(kWallpaperURLKey, wallpaper_url);
   data.Set(kWallpaperImagePathKey, background_file_path.AsUTF8Unsafe());
   data.Set(kWallpaperFocalPointXKey,
            campaign.backgrounds[background_index].focal_point.x());
@@ -537,7 +544,7 @@ bool NTPSponsoredImagesData::AdInfoMatchesSponsoredImage(
         }
 
         if (base::FilePath::FromUTF8Unsafe(wallpaper_image_filename)
-                .BaseName() != background.image_file.BaseName()) {
+                .BaseName() != background.wallpaper_file.BaseName()) {
           return false;
         }
         return wallpaper_info.focal_point.x == background.focal_point.x() &&

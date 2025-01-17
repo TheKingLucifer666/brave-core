@@ -128,13 +128,13 @@ base::FilePath NTPSponsoredImagesSource::GetLocalFilePathFor(
       const auto logo_basename_from_data =
           background.logo.image_file.BaseName();
       const auto wallpaper_basename_from_data =
-          background.image_file.BaseName();
+          background.wallpaper_file.BaseName();
 
       if (logo_basename_from_data == basename_from_path)
         return background.logo.image_file;
 
       if (wallpaper_basename_from_data == basename_from_path)
-        return background.image_file;
+        return background.wallpaper_file;
     }
   }
 
@@ -162,7 +162,7 @@ bool NTPSponsoredImagesSource::IsValidPath(const std::string& path) const {
       const auto logo_basename_from_data =
           background.logo.image_file.BaseName();
       const auto wallpaper_basename_from_data =
-          background.image_file.BaseName();
+          background.wallpaper_file.BaseName();
 
       if (logo_basename_from_data == basename_from_path ||
           wallpaper_basename_from_data == basename_from_path)
