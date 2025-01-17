@@ -15,7 +15,6 @@
 #include "brave/browser/ui/webui/brave_education/education_page_delegate_desktop.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_education/education_urls.h"
-#include "brave/components/brave_education/resources/grit/brave_education_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_interface.h"
@@ -28,6 +27,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
+// #include "brave/components/brave_education/resources/grit/brave_education_generated_map.h"
 // #include "components/grit/brave_components_resources.h"
 
 namespace {
@@ -36,7 +36,6 @@ void CreateAndAddWhatsNewUIHtmlSource(content::WebUI* web_ui,
                                       Profile* profile) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(profile, kBraveGettingStartedHost);
-
   webui::SetupWebUIDataSource(
       source, base::span<const webui::ResourcePath>(kBraveEducationResources),
       IDR_BRAVE_EDUCATION_BRAVE_EDUCATION_HTML);
@@ -50,9 +49,8 @@ void CreateAndAddWhatsNewUIHtmlSource(content::WebUI* web_ui,
   // Allow embedding of iframe content from allowed domains.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
-      "child-src chrome://webui-test https://brave.com/;");
-      // "child-src chrome://webui-test https://brave.com/ "
-      // "https://2263.pr.bravesoftware.com;");
+      "child-src chrome://webui-test https://brave.com/ "
+      "https://2263.pr.bravesoftware.com;");
 }
 
 }  // namespace
@@ -62,7 +60,7 @@ EducationPageUI::EducationPageUI(content::WebUI* web_ui, const GURL& url)
       page_factory_receiver_(this),
       browser_command_factory_receiver_(this),
       profile_(Profile::FromWebUI(web_ui)) {
-LOG(ERROR) << "BSC]] EducationPageUI |" << url.spec();
+  LOG(ERROR) << "BSC]] EducationPageUI |" << url.spec();
   CreateAndAddWhatsNewUIHtmlSource(web_ui, profile_);
 }
 
@@ -71,6 +69,8 @@ WEB_UI_CONTROLLER_TYPE_IMPL(EducationPageUI)
 void EducationPageUI::BindInterface(
     mojo::PendingReceiver<brave_education::mojom::PageHandlerFactory>
         receiver) {
+  LOG(ERROR) << "BSC]] BindInterface1";
+
   page_factory_receiver_.reset();
   page_factory_receiver_.Bind(std::move(receiver));
 }
@@ -79,6 +79,8 @@ void EducationPageUI::CreatePageHandler(
     mojo::PendingRemote<brave_education::mojom::Page> page,
     mojo::PendingReceiver<brave_education::mojom::PageHandler> receiver) {
   DCHECK(page);
+
+  LOG(ERROR) << "BSC]] CreatePageHandler";
 
   auto* web_contents = web_ui()->GetWebContents();
   auto* tab = tabs::TabInterface::GetFromContents(web_contents);
@@ -92,6 +94,7 @@ void EducationPageUI::CreatePageHandler(
 
 void EducationPageUI::BindInterface(
     mojo::PendingReceiver<BraveBrowserCommandHandlerFactory> pending_receiver) {
+  LOG(ERROR) << "BSC]] BindInterface2";
   if (browser_command_factory_receiver_.is_bound()) {
     browser_command_factory_receiver_.reset();
   }
@@ -103,6 +106,8 @@ void EducationPageUI::CreateBrowserCommandHandler(
         brave_browser_command::mojom::BraveBrowserCommandHandler>
         pending_handler) {
   std::vector<brave_browser_command::mojom::Command> supported_commands = {};
+
+  LOG(ERROR) << "BSC]] CreateBrowserCommandHandler";
 
   supported_commands.insert(
       supported_commands.end(),
