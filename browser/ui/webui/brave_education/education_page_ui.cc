@@ -43,7 +43,7 @@ void CreateAndAddWhatsNewUIHtmlSource(content::WebUI* web_ui,
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 
   static constexpr webui::LocalizedString kStrings[] = {
-      {"headerText", IDS_WELCOME_HEADER}};
+      {"title", IDS_WELCOME_HEADER}};
   source->AddLocalizedStrings(kStrings);
 
   // Allow embedding of iframe content from allowed domains.
@@ -53,6 +53,7 @@ void CreateAndAddWhatsNewUIHtmlSource(content::WebUI* web_ui,
       "https://2263.pr.bravesoftware.com;");
 }
 
+
 }  // namespace
 
 EducationPageUI::EducationPageUI(content::WebUI* web_ui, const GURL& url)
@@ -60,7 +61,6 @@ EducationPageUI::EducationPageUI(content::WebUI* web_ui, const GURL& url)
       page_factory_receiver_(this),
       browser_command_factory_receiver_(this),
       profile_(Profile::FromWebUI(web_ui)) {
-  LOG(ERROR) << "BSC]] EducationPageUI |" << url.spec();
   CreateAndAddWhatsNewUIHtmlSource(web_ui, profile_);
 }
 
@@ -69,7 +69,6 @@ WEB_UI_CONTROLLER_TYPE_IMPL(EducationPageUI)
 void EducationPageUI::BindInterface(
     mojo::PendingReceiver<brave_education::mojom::PageHandlerFactory>
         receiver) {
-  LOG(ERROR) << "BSC]] BindInterface1";
 
   page_factory_receiver_.reset();
   page_factory_receiver_.Bind(std::move(receiver));
@@ -79,8 +78,6 @@ void EducationPageUI::CreatePageHandler(
     mojo::PendingRemote<brave_education::mojom::Page> page,
     mojo::PendingReceiver<brave_education::mojom::PageHandler> receiver) {
   DCHECK(page);
-
-  LOG(ERROR) << "BSC]] CreatePageHandler";
 
   auto* web_contents = web_ui()->GetWebContents();
   auto* tab = tabs::TabInterface::GetFromContents(web_contents);
@@ -94,7 +91,6 @@ void EducationPageUI::CreatePageHandler(
 
 void EducationPageUI::BindInterface(
     mojo::PendingReceiver<BraveBrowserCommandHandlerFactory> pending_receiver) {
-  LOG(ERROR) << "BSC]] BindInterface2";
   if (browser_command_factory_receiver_.is_bound()) {
     browser_command_factory_receiver_.reset();
   }
@@ -107,7 +103,6 @@ void EducationPageUI::CreateBrowserCommandHandler(
         pending_handler) {
   std::vector<brave_browser_command::mojom::Command> supported_commands = {};
 
-  LOG(ERROR) << "BSC]] CreateBrowserCommandHandler";
 
   supported_commands.insert(
       supported_commands.end(),

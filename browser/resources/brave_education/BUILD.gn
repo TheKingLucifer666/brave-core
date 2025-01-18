@@ -26,6 +26,7 @@ build_webui("build") {
     "//ui/webui/resources/mojo:build_ts",
   ]
   webui_context_type = "trusted"
+  grit_output_dir = "$root_gen_dir/brave"
 
   mojo_files_deps =
       [ "//brave/browser/ui/webui/brave_education:mojo_bindings_ts__generator" ]
