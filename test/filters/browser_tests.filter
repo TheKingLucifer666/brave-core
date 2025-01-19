@@ -1147,6 +1147,7 @@
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeNonTransientModeAndSyncPause
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeTransientModeAndSyncPause
 -AvatarToolbarButtonWithExplicitBrowserSigninBrowserTest.SigninPaused*
+-BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_all_tabs
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearSiteData
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearingCookiesAlsoClearsPasswordAccountStorageOptIn
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearingCookiesWithFilterAlsoClearsPasswordAccountStorageOptIn
@@ -1365,7 +1366,7 @@
 -All/ClientSideDetectionServiceBrowserTest.TfLiteClassification/*
 -All/ClientSideDetectionServiceBrowserTest.TfLiteClassificationAfterTwoModelUploads/1
 
-# This test crashes because we have kOptimizationHints feature disabled.
+# These tests crash because we have kOptimizationHints feature disabled.
 -HintsFetcherPre3pcdBrowserTest.HintsFetcherDoesntFetchOnNSP
 -LoadingPredictorExtensionBrowserTest.PrefetchBlockedByExtension
 -LoadingPredictorExtensionBrowserTest.PrefetchObservedByExtension
@@ -1381,7 +1382,9 @@
 -NewTabPageUtilBrowserTest.EnableDriveByToT
 -NewTabPageUtilEnableFlagBrowserTest.*
 -NewTabPageUtilDisableFlagBrowserTest.*
+-PageContentAnnotationsServiceBatchVisit*Test.*
 -PageContentAnnotationsServiceBrowserTest.*
+-PageContentAnnotationsServiceContentExtractionTest.*
 -PageContentAnnotationsServiceNoHistoryTest.*
 -PageContentAnnotationsServiceRemoteMetadataBrowserTest.*
 -PageContentAnnotationsServiceSalientImageMetadataBrowserTest.*
@@ -1583,6 +1586,7 @@
 -All/LensOverlayControllerBrowserPDFContextualizationTest.PdfBytesIncludedInRequest/*
 -All/LensOverlayControllerBrowserPDFContextualizationTest.PdfBytesInFollowUpRequest/*
 -All/LensOverlayControllerBrowserPDFContextualizationTest.RecordSearchboxFocusedInSessionNavigationHistograms/*
+-All/LensOverlayControllerBrowserPDFContextualizationTest.SidePanel_SameTabCrossOriginLinkClick_PdfWithFragment/*
 -All/LensOverlayControllerBrowserPDFIncreaseLimitTest.PartialPdfCharacterLimitReached_IncludedInRequest/*
 -All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
 -LensOverlayControllerBrowserTest.*
@@ -2002,6 +2006,8 @@
 -DownloadToolbarUIControllerBrowserTest.HideDoesNotRemoveButtonIfPinned
 -DownloadToolbarUIControllerBrowserTest.OpenPrimaryDialog
 -DownloadToolbarUIControllerBrowserTest.OpenSecurityDialog
+-DownloadToolbarUIControllerBrowserTest.ProgressRingDormantState
+-DownloadToolbarUIControllerBrowserTest.ProgressRingVisibleDuringDownload
 -DownloadToolbarUIControllerBrowserTest.ShowHide
 
 # These tests fail because we stub captions::IsLiveCaptionFeatureSuppported to
@@ -2486,7 +2492,6 @@
 -OriginAgentClusterDisabledBrowserTest.*
 -OutOfProcessPPAPITest.HostResolverCrash_Basic
 -OutOfProcessPPAPITest.TCPSocketPrivateCrash_Resolve
--PageContentAnnotationsServiceBatchVisit*Test.*
 -PageInfoBubbleViewAboutThisSiteBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDialogBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDisabledBrowserTest.*
